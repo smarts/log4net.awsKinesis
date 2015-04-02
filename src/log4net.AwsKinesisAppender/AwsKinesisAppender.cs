@@ -1,13 +1,104 @@
-﻿using log4net.Appender;
+﻿using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+using Amazon;
+using Amazon.Kinesis;
+using Amazon.Kinesis.Model;
+using log4net.Appender;
 using log4net.Core;
+using log4net.Ext.Appender.Resources;
 
 namespace log4net.Ext.Appender
 {
     public class AwsKinesisAppender : AppenderSkeleton
     {
+        private IAmazonKinesis awsKinesis;
+
+        public string StreamName { get; set; }
+
+        protected override bool RequiresLayout
+        {
+            get { return true; }
+        }
+
+        public AwsKinesisAppender()
+        {
+            this.StreamName = String.Empty;
+        }
+
+        public override void ActivateOptions()
+        {
+            base.ActivateOptions();
+
+            DisposeClient();
+
+            try
+            {
+                awsKinesis = AWSClientFactory.CreateAmazonKinesisClient();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Error(Resource.AwsKinesisClientCreationError, ex);
+            }
+        }
+
         protected override void Append(LoggingEvent loggingEvent)
         {
-            // TODO: forward event to AWS Kinesis
+            var request = CreateRequest(loggingEvent);
+
+            awsKinesis.PutRecordAsync(request)
+                .ContinueWith(HandleError, TaskContinuationOptions.OnlyOnFaulted);
+        }
+
+        private PutRecordRequest CreateRequest(LoggingEvent loggingEvent)
+        {
+            return new PutRecordRequest
+            {
+                StreamName = this.StreamName,
+                Data = Stream(loggingEvent),
+                PartitionKey = Guid.NewGuid().ToString()
+            };
+        }
+
+        private MemoryStream Stream(LoggingEvent loggingEvent)
+        {
+            MemoryStream result = new MemoryStream();
+
+            try
+            {
+                using (var writer = new StreamWriter(result, Encoding.UTF8, bufferSize: 1024, leaveOpen: true))
+                {
+                    Layout.Format(writer, loggingEvent);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Error(String.Format(Resource.LayoutFormatStreamWriteErrorFormat, Layout.GetType(), loggingEvent), ex);
+
+                result = new MemoryStream(0);
+            }
+
+            return result;
+        }
+
+        private void HandleError(Task task)
+        {
+            ErrorHandler.Error(Resource.AwsKinesisSendError, task.Exception);
+        }
+
+        protected override void OnClose()
+        {
+            base.OnClose();
+
+            DisposeClient();
+        }
+
+        private void DisposeClient()
+        {
+            using (awsKinesis) { }
+
+            awsKinesis = null;
         }
     }
 }
