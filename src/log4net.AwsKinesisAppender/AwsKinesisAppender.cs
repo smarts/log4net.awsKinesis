@@ -7,6 +7,7 @@ using Amazon.Kinesis;
 using Amazon.Kinesis.Model;
 using log4net.Appender;
 using log4net.Core;
+using log4net.Ext.Appender.AwsKinesis;
 using log4net.Ext.Appender.Resources;
 
 namespace log4net.Ext.Appender
@@ -17,6 +18,8 @@ namespace log4net.Ext.Appender
 
         public string StreamName { get; set; }
 
+        public IAwsKinesisFactory ClientFactory { get; set; }
+
         protected override bool RequiresLayout
         {
             get { return true; }
@@ -25,17 +28,29 @@ namespace log4net.Ext.Appender
         public AwsKinesisAppender()
         {
             this.StreamName = String.Empty;
+
+            this.ClientFactory = new AwsKinesisFactory();
         }
 
         public override void ActivateOptions()
         {
             base.ActivateOptions();
 
+            DisposeThenInitializeClient();
+        }
+
+        private void DisposeThenInitializeClient()
+        {
             DisposeClient();
 
+            InitializeClient();
+        }
+
+        private void InitializeClient()
+        {
             try
             {
-                awsKinesis = AWSClientFactory.CreateAmazonKinesisClient();
+                awsKinesis = ClientFactory.Create();
             }
             catch (Exception ex)
             {
