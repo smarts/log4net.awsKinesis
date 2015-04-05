@@ -120,6 +120,9 @@
   <data name="AwsKinesisClientCreationError" xml:space="preserve">
     <value>Could not create AWS Kinesis client</value>
   </data>
+  <data name="AwsKinesisClientDisposalError" xml:space="preserve">
+    <value>Error disposing AWS Kinesis client</value>
+  </data>
   <data name="AwsKinesisSendError" xml:space="preserve">
     <value>Error sending request to AWS Kinesis</value>
   </data>

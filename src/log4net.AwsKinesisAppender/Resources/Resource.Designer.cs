@@ -70,6 +70,15 @@ namespace log4net.Ext.Appender.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error disposing AWS Kinesis client.
+        /// </summary>
+        internal static string AwsKinesisClientDisposalError {
+            get {
+                return ResourceManager.GetString("AwsKinesisClientDisposalError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error sending request to AWS Kinesis.
         /// </summary>
         internal static string AwsKinesisSendError {

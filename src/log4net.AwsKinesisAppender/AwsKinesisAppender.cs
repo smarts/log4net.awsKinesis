@@ -111,9 +111,16 @@ namespace log4net.Ext.Appender
 
         private void DisposeClient()
         {
-            using (awsKinesis) { }
+            try
+            {
+                using (awsKinesis) { }
 
-            awsKinesis = null;
+                awsKinesis = null;
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Error(Resource.AwsKinesisClientDisposalError, ex);
+            }
         }
     }
 }
