@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2C6D3B
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net.AwsKinesisAppender.UnitTests", "log4net.AwsKinesisAppender.UnitTests\log4net.AwsKinesisAppender.UnitTests.csproj", "{C8EA2BC6-29F1-449C-A18C-031E3022F8EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{523C6E34-44DF-4536-96CC-8A9EA3B9FAEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{523C6E34-44DF-4536-96CC-8A9EA3B9FAEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{523C6E34-44DF-4536-96CC-8A9EA3B9FAEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8EA2BC6-29F1-449C-A18C-031E3022F8EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8EA2BC6-29F1-449C-A18C-031E3022F8EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8EA2BC6-29F1-449C-A18C-031E3022F8EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8EA2BC6-29F1-449C-A18C-031E3022F8EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
