@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("log4net.AwsKinesis")]
 [assembly: AssemblyDescription("A log4net appender that writes to an AWS Kinesis stream.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("InfoSpace")]
+[assembly: AssemblyCompany("InfoSpace, LLC")]
 [assembly: AssemblyProduct("log4net.AwsKinesis")]
-[assembly: AssemblyCopyright("Copyright © InfoSpace")]
+[assembly: AssemblyCopyright("Copyright © InfoSpace, LLC")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
