@@ -196,13 +196,13 @@ namespace log4net.Ext.Tests.Appender
         public void DoAppend_HandlesAwsKinesisSendError()
         {
             // Arrange
-            Task<PutRecordResponse> task = null;
+            Func<PutRecordResponse> taskDelegate = () => { throw new Exception(); };
 
-            var client = new Mock<IAmazonKinesis>();
-            client.Setup(x => x.PutRecordAsync(It.IsAny<PutRecordRequest>(), default(CancellationToken)))
-                .Returns(() => { task = new Task<PutRecordResponse>(() => { throw new Exception(); }); task.Start(); return task; });
+            var task = Task.Run(taskDelegate);
 
-            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create() == client.Object);
+            var client = Mock.Of<IAmazonKinesis>(x => x.PutRecordAsync(It.IsAny<PutRecordRequest>(), default(CancellationToken)) == task);
+
+            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create() == client);
 
             var target = AwsKinesisAppender(clientFactory: clientFactory);
 
