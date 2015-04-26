@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Amazon;
 using Amazon.Kinesis;
 using Amazon.Kinesis.Model;
 using log4net.Appender;
@@ -19,7 +20,7 @@ namespace log4net.Ext.Appender
     /// See http://docs.aws.amazon.com/AWSSdkDocsNET/latest/DeveloperGuide/net-dg-config.html
     /// for information on how to configure the AWS SDK.
     /// </remarks>
-    public class AwsKinesisAppender : AppenderSkeleton
+    public class AwsKinesisAppender : BufferingAppenderSkeleton
     {
         private IAmazonKinesis awsKinesis;
 
@@ -104,6 +105,32 @@ namespace log4net.Ext.Appender
             return new PutRecordRequest
             {
                 StreamName = StreamName,
+                Data = Stream(loggingEvent),
+                PartitionKey = Guid.NewGuid().ToString()
+            };
+        }
+
+        protected override void SendBuffer(LoggingEvent[] loggingEvents)
+        {
+            var request = CreateRequest(loggingEvents);
+
+            awsKinesis.PutRecordsAsync(request)
+                .ContinueWith(HandleError, TaskContinuationOptions.OnlyOnFaulted);
+        }
+
+        private PutRecordsRequest CreateRequest(IEnumerable<LoggingEvent> loggingEvents)
+        {
+            return new PutRecordsRequest
+            {
+                StreamName = StreamName,
+                Records = loggingEvents.Select(PutRecordsRequestEntry).ToList(),
+            };
+        }
+
+        private PutRecordsRequestEntry PutRecordsRequestEntry(LoggingEvent loggingEvent)
+        {
+            return new PutRecordsRequestEntry
+            {
                 Data = Stream(loggingEvent),
                 PartitionKey = Guid.NewGuid().ToString()
             };
