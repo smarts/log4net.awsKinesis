@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreReleaseSuffix Condition="'$(PreReleaseSuffix)'==''"></PreReleaseSuffix>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <VersionFiles Include="$(MSBuildThisFileDirectory)\..\**\AssemblyInfo.cs"/>
+  </ItemGroup>
+
+  <Target Name="UpdateAssemblyVersions">
+    <UpdateAssemblyVersionTask Revision="$(Revision)" PreReleaseSuffix="$(PreReleaseSuffix)" VersionFile="%(VersionFiles.Identity)"/>
+  </Target>
+
+  <UsingTask TaskName="UpdateAssemblyVersionTask" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <VersionFile ParameterType="Microsoft.Build.Framework.ITaskItem" Required="true" />
+      <Revision ParameterType="System.Int32" Required="true" />
+      <PreReleaseSuffix ParameterType="System.String" Required="false" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.Core" />
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text" />
+      <Using Namespace="System.Text.RegularExpressions" />
+      <Using Namespace="Microsoft.Build.Framework" />
+      <Using Namespace="Microsoft.Build.Utilities" />
+      <Code Type="Class" Language="cs" Source="UpdateAssemblyVersionTask.cs" />
+    </Task>
+  </UsingTask>
+</Project>
