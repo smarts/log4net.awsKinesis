@@ -27,9 +27,9 @@ namespace log4net.Ext.Appender
 
         public AwsKinesisAppender()
         {
-            this.StreamName = String.Empty;
+            StreamName = String.Empty;
 
-            this.ClientFactory = new AwsKinesisFactory();
+            ClientFactory = new AwsKinesisFactory();
         }
 
         public override void ActivateOptions()
@@ -70,7 +70,7 @@ namespace log4net.Ext.Appender
         {
             return new PutRecordRequest
             {
-                StreamName = this.StreamName,
+                StreamName = StreamName,
                 Data = Stream(loggingEvent),
                 PartitionKey = Guid.NewGuid().ToString()
             };
