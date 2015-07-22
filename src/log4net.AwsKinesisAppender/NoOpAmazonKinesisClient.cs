@@ -19,7 +19,7 @@ namespace log4net.Ext.Appender
 
         public Task<AddTagsToStreamResponse> AddTagsToStreamAsync(AddTagsToStreamRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
-            return new Task<AddTagsToStreamResponse>(() => null);
+            return Task.FromResult<AddTagsToStreamResponse>(null);
         }
 
         public CreateStreamResponse CreateStream(CreateStreamRequest request)
@@ -29,7 +29,7 @@ namespace log4net.Ext.Appender
 
         public Task<CreateStreamResponse> CreateStreamAsync(CreateStreamRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
-            return new Task<CreateStreamResponse>(() => null);
+            return Task.FromResult<CreateStreamResponse>(null);
         }
 
         public DeleteStreamResponse DeleteStream(DeleteStreamRequest request)
@@ -39,7 +39,7 @@ namespace log4net.Ext.Appender
 
         public Task<DeleteStreamResponse> DeleteStreamAsync(DeleteStreamRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
-            return new Task<DeleteStreamResponse>(() => null);
+            return Task.FromResult<DeleteStreamResponse>(null);
         }
 
         public DescribeStreamResponse DescribeStream(DescribeStreamRequest request)
@@ -49,7 +49,7 @@ namespace log4net.Ext.Appender
 
         public Task<DescribeStreamResponse> DescribeStreamAsync(DescribeStreamRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
-            return new Task<DescribeStreamResponse>(() => null);
+            return Task.FromResult<DescribeStreamResponse>(null);
         }
 
         public GetRecordsResponse GetRecords(GetRecordsRequest request)
@@ -59,7 +59,7 @@ namespace log4net.Ext.Appender
 
         public Task<GetRecordsResponse> GetRecordsAsync(GetRecordsRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
-            return new Task<GetRecordsResponse>(() => null);
+            return Task.FromResult<GetRecordsResponse>(null);
         }
 
         public GetShardIteratorResponse GetShardIterator(GetShardIteratorRequest request)
@@ -70,7 +70,7 @@ namespace log4net.Ext.Appender
         public Task<GetShardIteratorResponse> GetShardIteratorAsync(GetShardIteratorRequest request,
             CancellationToken cancellationToken = new CancellationToken())
         {
-            return new Task<GetShardIteratorResponse>(() => null);
+            return Task.FromResult<GetShardIteratorResponse>(null);
         }
 
         public ListStreamsResponse ListStreams()
@@ -85,7 +85,7 @@ namespace log4net.Ext.Appender
 
         public Task<ListStreamsResponse> ListStreamsAsync(ListStreamsRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
-            return new Task<ListStreamsResponse>(() => null);
+            return Task.FromResult<ListStreamsResponse>(null);
         }
 
         public ListTagsForStreamResponse ListTagsForStream(ListTagsForStreamRequest request)
@@ -96,7 +96,7 @@ namespace log4net.Ext.Appender
         public Task<ListTagsForStreamResponse> ListTagsForStreamAsync(ListTagsForStreamRequest request,
             CancellationToken cancellationToken = new CancellationToken())
         {
-            return new Task<ListTagsForStreamResponse>(() => null);
+            return Task.FromResult<ListTagsForStreamResponse>(null);
         }
 
         public MergeShardsResponse MergeShards(MergeShardsRequest request)
@@ -106,7 +106,7 @@ namespace log4net.Ext.Appender
 
         public Task<MergeShardsResponse> MergeShardsAsync(MergeShardsRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
-            return new Task<MergeShardsResponse>(() => null);
+            return Task.FromResult<MergeShardsResponse>(null);
         }
 
         public PutRecordResponse PutRecord(PutRecordRequest request)
@@ -116,7 +116,7 @@ namespace log4net.Ext.Appender
 
         public Task<PutRecordResponse> PutRecordAsync(PutRecordRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
-            return new Task<PutRecordResponse>(() => null);
+            return Task.FromResult<PutRecordResponse>(null);
         }
 
         public PutRecordsResponse PutRecords(PutRecordsRequest request)
@@ -126,7 +126,7 @@ namespace log4net.Ext.Appender
 
         public Task<PutRecordsResponse> PutRecordsAsync(PutRecordsRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
-            return new Task<PutRecordsResponse>(() => null);
+            return Task.FromResult<PutRecordsResponse>(null);
         }
 
         public RemoveTagsFromStreamResponse RemoveTagsFromStream(RemoveTagsFromStreamRequest request)
@@ -137,7 +137,7 @@ namespace log4net.Ext.Appender
         public Task<RemoveTagsFromStreamResponse> RemoveTagsFromStreamAsync(RemoveTagsFromStreamRequest request,
             CancellationToken cancellationToken = new CancellationToken())
         {
-            return new Task<RemoveTagsFromStreamResponse>(() => null);
+            return Task.FromResult<RemoveTagsFromStreamResponse>(null);
         }
 
         public SplitShardResponse SplitShard(SplitShardRequest request)
@@ -147,7 +147,7 @@ namespace log4net.Ext.Appender
 
         public Task<SplitShardResponse> SplitShardAsync(SplitShardRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
-            return new Task<SplitShardResponse>(() => null);
+            return Task.FromResult<SplitShardResponse>(null);
         }
     }
 }
