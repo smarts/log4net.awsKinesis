@@ -76,7 +76,7 @@ namespace log4net.Ext.Tests.Appender
         public void ActivateOptions_DisposesClient()
         {
             // Arrange
-            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create(It.IsAny<IErrorHandler>()) == Mock.Of<IAmazonKinesis>());
+            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create() == Mock.Of<IAmazonKinesis>());
 
             var target = AwsKinesisAppender(clientFactory: clientFactory);
 
@@ -88,7 +88,7 @@ namespace log4net.Ext.Tests.Appender
             target.ActivateOptions();
 
             // Assert
-            Mock.Get(clientFactory.Create(It.IsAny<IErrorHandler>())).Verify(x => x.Dispose(), Times.Once());
+            Mock.Get(clientFactory.Create()).Verify(x => x.Dispose(), Times.Once());
         }
 
         [TestMethod]
@@ -98,7 +98,7 @@ namespace log4net.Ext.Tests.Appender
             var client = new Mock<IAmazonKinesis>();
             client.Setup(x => x.Dispose()).Throws(new Exception());
 
-            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create(It.IsAny<IErrorHandler>()) == client.Object);
+            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create() == client.Object);
 
             var target = AwsKinesisAppender(clientFactory: clientFactory);
 
@@ -123,7 +123,7 @@ namespace log4net.Ext.Tests.Appender
             target.ActivateOptions();
 
             // Assert
-            Mock.Get(target.ClientFactory).Verify(x => x.Create(It.IsAny<IErrorHandler>()), Times.Once());
+            Mock.Get(target.ClientFactory).Verify(x => x.Create(), Times.Once());
         }
 
         [TestMethod]
@@ -147,7 +147,7 @@ namespace log4net.Ext.Tests.Appender
             // Arrange
             var client = Mock.Of<IAmazonKinesis>(y => y.PutRecordsAsync(It.IsAny<PutRecordsRequest>(), default(CancellationToken)) == Task.FromResult(new PutRecordsResponse()));
 
-            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create(It.IsAny<IErrorHandler>()) == client);
+            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create() == client);
 
             var streamName = "foo";
 
@@ -169,8 +169,8 @@ namespace log4net.Ext.Tests.Appender
         public void DoAppend_HandlesLayoutFormatError()
         {
             // Arrange
-            var clientFactory = Mock.Of<IAwsKinesisFactory>(x =>
-                x.Create(It.IsAny<IErrorHandler>()) ==
+            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => 
+                x.Create() ==
                 Mock.Of<IAmazonKinesis>(y =>
                     y.PutRecordAsync(It.IsAny<PutRecordRequest>(), default(CancellationToken)) ==
                     Task.FromResult(new PutRecordResponse())));
@@ -202,7 +202,7 @@ namespace log4net.Ext.Tests.Appender
 
             var client = Mock.Of<IAmazonKinesis>(x => x.PutRecordsAsync(It.IsAny<PutRecordsRequest>(), default(CancellationToken)) == task);
 
-            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create(It.IsAny<IErrorHandler>()) == client);
+            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create() == client);
 
             var target = AwsKinesisAppender(clientFactory: clientFactory);
 
@@ -234,7 +234,7 @@ namespace log4net.Ext.Tests.Appender
             // Arrange
             var client = Mock.Of<IAmazonKinesis>();
 
-            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create(It.IsAny<IErrorHandler>()) == client);
+            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create() == client);
 
             var target = AwsKinesisAppender(clientFactory: clientFactory);
 
@@ -247,7 +247,7 @@ namespace log4net.Ext.Tests.Appender
 
             // Assert
             Mock.Get(client).Verify(x => x.PutRecordAsync(It.IsAny<PutRecordRequest>(), It.IsAny<CancellationToken>()), Times.Never());
-
+            
             Mock.Get(client).Verify(x => x.PutRecordsAsync(It.IsAny<PutRecordsRequest>(), It.IsAny<CancellationToken>()), Times.Never());
         }
 
@@ -257,7 +257,7 @@ namespace log4net.Ext.Tests.Appender
             // Arrange
             var client = Mock.Of<IAmazonKinesis>();
 
-            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create(It.IsAny<IErrorHandler>()) == client);
+            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create() == client);
 
             var target = AwsKinesisAppender(clientFactory: clientFactory);
 
@@ -278,7 +278,7 @@ namespace log4net.Ext.Tests.Appender
             // Arrange
             var client = Mock.Of<IAmazonKinesis>();
 
-            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create(It.IsAny<IErrorHandler>()) == client);
+            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create() == client);
 
             var target = AwsKinesisAppender(clientFactory: clientFactory, bufferSize: 2);
 
