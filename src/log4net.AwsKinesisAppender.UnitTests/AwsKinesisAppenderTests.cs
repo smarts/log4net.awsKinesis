@@ -145,7 +145,7 @@ namespace log4net.Ext.Tests.Appender
         public void DoAppend_UsesStreamNameInAwsKinesisRequest()
         {
             // Arrange
-            var client = Mock.Of<IAmazonKinesis>(y => y.PutRecordAsync(It.IsAny<PutRecordRequest>(), default(CancellationToken)) == Task.FromResult(new PutRecordResponse()));
+            var client = Mock.Of<IAmazonKinesis>(y => y.PutRecordsAsync(It.IsAny<PutRecordsRequest>(), default(CancellationToken)) == Task.FromResult(new PutRecordsResponse()));
 
             var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create() == client);
 
@@ -162,7 +162,7 @@ namespace log4net.Ext.Tests.Appender
 
             // Assert
             Mock.Get(client).Verify(x =>
-                x.PutRecordAsync(It.Is<PutRecordRequest>(y => y.StreamName == streamName), default(CancellationToken)), Times.Once());
+                x.PutRecordsAsync(It.Is<PutRecordsRequest>(y => y.StreamName == streamName), default(CancellationToken)), Times.Once());
         }
 
         [TestMethod]
@@ -196,11 +196,11 @@ namespace log4net.Ext.Tests.Appender
         public void DoAppend_HandlesAwsKinesisSendError()
         {
             // Arrange
-            Func<PutRecordResponse> taskDelegate = () => { throw new Exception(); };
+            Func<PutRecordsResponse> taskDelegate = () => { throw new Exception(); };
 
             var task = Task.Run(taskDelegate);
 
-            var client = Mock.Of<IAmazonKinesis>(x => x.PutRecordAsync(It.IsAny<PutRecordRequest>(), default(CancellationToken)) == task);
+            var client = Mock.Of<IAmazonKinesis>(x => x.PutRecordsAsync(It.IsAny<PutRecordsRequest>(), default(CancellationToken)) == task);
 
             var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create() == client);
 
@@ -228,7 +228,77 @@ namespace log4net.Ext.Tests.Appender
             Mock.Get(target.ErrorHandler).Verify(x => x.Error(It.Is<string>(y => y.Contains("sending")), It.IsAny<Exception>()), Times.Once());
         }
 
-        private static AwsKinesisAppender AwsKinesisAppender(string streamName = null, IAwsKinesisFactory clientFactory = null, IErrorHandler errorHandler = null)
+        [TestMethod]
+        public void DoAppend_BuffersLoggingEvents_IfBufferSizeIsGreaterThanOne()
+        {
+            // Arrange
+            var client = Mock.Of<IAmazonKinesis>();
+
+            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create() == client);
+
+            var target = AwsKinesisAppender(clientFactory: clientFactory);
+
+            target.Layout = Mock.Of<ILayout>();
+
+            target.BufferSize = 1;
+
+            // Act
+            target.DoAppend(new LoggingEvent(new LoggingEventData()));
+
+            // Assert
+            Mock.Get(client).Verify(x => x.PutRecordAsync(It.IsAny<PutRecordRequest>(), It.IsAny<CancellationToken>()), Times.Never());
+            
+            Mock.Get(client).Verify(x => x.PutRecordsAsync(It.IsAny<PutRecordsRequest>(), It.IsAny<CancellationToken>()), Times.Never());
+        }
+
+        [TestMethod]
+        public void DoAppend_SendsLoggingEvent_IfBufferSizeIsZero()
+        {
+            // Arrange
+            var client = Mock.Of<IAmazonKinesis>();
+
+            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create() == client);
+
+            var target = AwsKinesisAppender(clientFactory: clientFactory);
+
+            target.Layout = Mock.Of<ILayout>();
+
+            target.ActivateOptions();
+
+            // Act
+            target.DoAppend(new LoggingEvent(new LoggingEventData()));
+
+            // Assert
+            Mock.Get(client).Verify(x => x.PutRecordsAsync(It.IsAny<PutRecordsRequest>(), It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [TestMethod]
+        public void DoAppend_SendsLoggingEvents_IfBufferSizeIsTwo()
+        {
+            // Arrange
+            var client = Mock.Of<IAmazonKinesis>();
+
+            var clientFactory = Mock.Of<IAwsKinesisFactory>(x => x.Create() == client);
+
+            var target = AwsKinesisAppender(clientFactory: clientFactory, bufferSize: 2);
+
+            target.Layout = Mock.Of<ILayout>();
+
+            target.ActivateOptions();
+
+            // Act
+            target.DoAppend(new[]
+            {
+                new LoggingEvent(new LoggingEventData()),
+                new LoggingEvent(new LoggingEventData()),
+                new LoggingEvent(new LoggingEventData())
+            });
+
+            // Assert
+            Mock.Get(client).Verify(x => x.PutRecordsAsync(It.Is<PutRecordsRequest>(y => y.Records.Count == 3), It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        private static AwsKinesisAppender AwsKinesisAppender(string streamName = null, IAwsKinesisFactory clientFactory = null, IErrorHandler errorHandler = null, int bufferSize = 0)
         {
             var result = new AwsKinesisAppender();
 
@@ -236,6 +306,8 @@ namespace log4net.Ext.Tests.Appender
             {
                 result.StreamName = streamName;
             }
+
+            result.BufferSize = bufferSize;
 
             result.ClientFactory = clientFactory ?? Mock.Of<IAwsKinesisFactory>();
 

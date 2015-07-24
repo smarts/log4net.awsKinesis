@@ -92,11 +92,11 @@ namespace log4net.Ext.Appender
             }
         }
 
-        protected override void Append(LoggingEvent loggingEvent)
+        protected override void SendBuffer(LoggingEvent[] loggingEvents)
         {
-            var request = CreateRequest(loggingEvent);
+            var request = CreateRequest(loggingEvents);
 
-            awsKinesis.PutRecordAsync(request)
+            awsKinesis.PutRecordsAsync(request)
                 .ContinueWith(HandleError, TaskContinuationOptions.OnlyOnFaulted);
         }
 
@@ -108,14 +108,6 @@ namespace log4net.Ext.Appender
                 Data = Stream(loggingEvent),
                 PartitionKey = Guid.NewGuid().ToString()
             };
-        }
-
-        protected override void SendBuffer(LoggingEvent[] loggingEvents)
-        {
-            var request = CreateRequest(loggingEvents);
-
-            awsKinesis.PutRecordsAsync(request)
-                .ContinueWith(HandleError, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         private PutRecordsRequest CreateRequest(IEnumerable<LoggingEvent> loggingEvents)
