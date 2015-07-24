@@ -13,10 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2C6D3B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net.AwsKinesisAppender.UnitTests", "log4net.AwsKinesisAppender.UnitTests\log4net.AwsKinesisAppender.UnitTests.csproj", "{C8EA2BC6-29F1-449C-A18C-031E3022F8EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net.CircuitBreakerErrorHandler", "log4net.ErrorHandlerCircuitBreaker\log4net.CircuitBreakerErrorHandler.csproj", "{5FC41AA2-1D01-458C-BB75-B3EA51DCE32C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net.CircuitBreakerErrorHandler.UnitTests", "log4net.CircuitBreakerErrorHandler.UnitTests\log4net.CircuitBreakerErrorHandler.UnitTests.csproj", "{28948950-8B31-4CDA-A0C2-27B4AF01597C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,14 +27,6 @@ Global
 		{C8EA2BC6-29F1-449C-A18C-031E3022F8EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8EA2BC6-29F1-449C-A18C-031E3022F8EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8EA2BC6-29F1-449C-A18C-031E3022F8EB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5FC41AA2-1D01-458C-BB75-B3EA51DCE32C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5FC41AA2-1D01-458C-BB75-B3EA51DCE32C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5FC41AA2-1D01-458C-BB75-B3EA51DCE32C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5FC41AA2-1D01-458C-BB75-B3EA51DCE32C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{28948950-8B31-4CDA-A0C2-27B4AF01597C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28948950-8B31-4CDA-A0C2-27B4AF01597C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28948950-8B31-4CDA-A0C2-27B4AF01597C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28948950-8B31-4CDA-A0C2-27B4AF01597C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
