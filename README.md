@@ -14,7 +14,10 @@ The library takes advantage of the AWS and log4net configurations. A basic setup
     <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />
     <section name="aws" type="Amazon.AWSSection, AWSSDK" />
   </configSections>
-  <aws profileName="development" />
+  <aws profileName="development" /> <!-- Use this aws configuration block if you want to specify a profile -->
+  <aws region="us-west-2"> <!-- Use this aws configuration block if you want to apply IAM roles to EC2 instances -->
+    <logging logTo="Log4Net"/>
+  </aws>
   <log4net>
     <appender name="AwsKinesis" type="log4net.Ext.Appender.AwsKinesisAppender, log4net.Ext.AwsKinesis">
       <streamName value="MyStream" />
