@@ -14,7 +14,6 @@ The library takes advantage of the AWS and log4net configurations. A basic setup
     <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />
     <section name="aws" type="Amazon.AWSSection, AWSSDK" />
   </configSections>
-  <aws profileName="development" />
   <log4net>
     <appender name="AwsKinesis" type="log4net.Ext.Appender.AwsKinesisAppender, log4net.Ext.AwsKinesis">
       <streamName value="MyStream" />
