@@ -84,7 +84,7 @@ namespace log4net.Ext.Appender
         {
             try
             {
-                awsKinesis = ClientFactory.Create(ErrorHandler);
+                awsKinesis = ClientFactory.Create();
             }
             catch (Exception ex)
             {
