@@ -7,7 +7,7 @@ namespace log4net.Ext.Appender.AwsKinesis
     {
         public IAmazonKinesis Create()
         {
-            return new AmazonKinesisClient();
+            return AWSClientFactory.CreateAmazonKinesisClient();
         }
     }
 }
