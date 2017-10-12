@@ -1,5 +1,4 @@
-﻿using Amazon;
-using Amazon.Kinesis;
+﻿using Amazon.Kinesis;
 
 namespace log4net.Ext.Appender.AwsKinesis
 {
@@ -7,7 +6,7 @@ namespace log4net.Ext.Appender.AwsKinesis
     {
         public IAmazonKinesis Create()
         {
-            return AWSClientFactory.CreateAmazonKinesisClient();
+            return new AmazonKinesisClient();
         }
     }
 }
