@@ -170,10 +170,11 @@ namespace log4net.Ext.Appender
         {
             base.OnClose();
 
-            DisposeClient();
+            DisposeClient(ErrorCode.CloseFailure);
         }
 
-        private void DisposeClient()
+        private void DisposeClient(
+            ErrorCode errorCodeIfException = ErrorCode.GenericFailure)
         {
             try
             {
@@ -183,7 +184,10 @@ namespace log4net.Ext.Appender
             }
             catch (Exception ex)
             {
-                ErrorHandler.Error(Resource.AwsKinesisClientDisposalError, ex);
+                ErrorHandler.Error(
+                    Resource.AwsKinesisClientDisposalError,
+                    ex,
+                    errorCodeIfException);
             }
         }
     }

@@ -49,6 +49,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,6 +59,9 @@
   <ItemGroup>
     <Compile Include="AwsKinesisAppender.cs" />
     <Compile Include="AwsKinesisFactory.cs" />
+    <Compile Include="CircuitBreakerForwardingAppender.cs" />
+    <Compile Include="CountingErrorHandler.cs" />
+    <Compile Include="ErrorThresholdFilter.cs" />
     <Compile Include="IAwsKinesisFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Resource.Designer.cs">
